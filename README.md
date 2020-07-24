@@ -4,6 +4,13 @@ You need to have the following installed to be able to use the code
 1. MongoDB
 2. Virtualenv
 
+
+### MongoDB 
+
+Database name is DVDRentals
+
+Collection name is films and customers 
+
 ## Installation
 Create virtual environment and activate
 
@@ -36,3 +43,5 @@ These tables data is loaded via JSON using jquery
 - Customer rentals ```http://127.0.0.1:5000/customer_rentals```
 - Film details with list of customers who rented it ```http://127.0.0.1:5000/film_customer_rentals``` 
 
+
+### Here along with API , frontend is also implemented

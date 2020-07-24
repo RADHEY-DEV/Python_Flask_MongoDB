@@ -4,8 +4,8 @@ from flask_pymongo import PyMongo
 
 app = Flask(__name__)
 
-app.config['MONGO_DBNAME'] = "DVDRental"
-app.config['MONGO_URI'] = "mongodb://localhost:27017/DVDRental"
+app.config['MONGO_DBNAME'] = "DVDRentals"
+app.config['MONGO_URI'] = "mongodb://localhost:27017/DVDRentals"
 
 mongo = PyMongo(app)
 
@@ -15,9 +15,9 @@ def customers():
     return render_template('customers.html')
 
 
-@app.route('/customer_rentals')
-def customer_rentals():
-    return render_template('customer_rentals.html')
+@app.route('/customer_rentals/<customer_id>', methods=['GET'])
+def customer_rentals(customer_id):
+    return render_template('customer_rentals.html', customer_id=customer_id)
 
 
 @app.route('/film_customer_rentals')

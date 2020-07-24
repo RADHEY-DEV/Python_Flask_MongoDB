@@ -25,6 +25,7 @@
     <table style="border: 1px solid black;" id="list_table_json">
     <thead>
         <tr>
+            <h1>Rental Details for customer with ID <span id="customer_id"> {{ customer_id }}</span></h1>
             <th>Rental Date</th>
             <th>Rental Duration (Days)</th>
             <th>Rental Cost ($)</th>
@@ -34,9 +35,14 @@
 <script src="https://unpkg.com/jquery@3.2.1/dist/jquery.min.js"></script>
 
 <script type="text/javascript">
-$(document).ready(function(){
+
+    var id_span = document.getElementById( 'customer_id' );
+    var cust_id = id_span.textContent.replace(" ", "");
+    var ajax_url = "api/customers/" + cust_id
+    console.log(ajax_url)
+
     $.ajax({
-        url: "api/customers/38",
+        url: "/api/customers/" + cust_id,
         dataType: 'json',
         type: 'get',
         cache: false,
@@ -54,11 +60,9 @@ $(document).ready(function(){
             $("#list_table_json").append(customer_rental_data);
         },
         error: function(d){
-            console.log("error");
-            alert("404. Please wait until the File is Loaded.");
+            console.log(d);
         }
     });
-});
 </script>
 
 </body>
