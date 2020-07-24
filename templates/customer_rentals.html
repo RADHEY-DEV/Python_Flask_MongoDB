@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <table style="border: 1px solid black;" id="list_table_json">
+    <thead>
+        <tr>
+            <th>Rental Date</th>
+            <th>Rental Duration (Days)</th>
+            <th>Rental Cost ($)</th>
+        </tr>
+    </thead>
+</table>
+<script src="https://unpkg.com/jquery@3.2.1/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $.ajax({
+        url: "api/customers/38",
+        dataType: 'json',
+        type: 'get',
+        cache: false,
+        success: function(data){
+            console.log(data);
+            var customer_rental_data = '';
+            $.each(data, function(index, value){
+                console.log(value);
+                customer_rental_data += '<tr>';
+                customer_rental_data += '<td>'+value.rental_date+'</td>';
+                customer_rental_data += '<td>'+value.rental_duration+'</td>';
+                customer_rental_data += '<td>'+value.rental_cost+'</td>';
+                customer_rental_data += '</tr>';
+            });
+            $("#list_table_json").append(customer_rental_data);
+        },
+        error: function(d){
+            console.log("error");
+            alert("404. Please wait until the File is Loaded.");
+        }
+    });
+});
+</script>
+
+</body>
+</html>

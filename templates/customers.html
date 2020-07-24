@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <table style="border: 1px solid black;" id="list_table_json">
+    <thead>
+        <tr>
+            <th>Customer ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>District</th>
+            <th>City</th>
+            <th>Country</th>
+        </tr>
+    </thead>
+</table>
+<script src="https://unpkg.com/jquery@3.2.1/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $.ajax({
+        url: "api/customers",
+        dataType: 'json',
+        type: 'get',
+        cache: false,
+        success: function(data){
+            console.log(data);
+            var customer_data = '';
+            $.each(data, function(index, value){
+                console.log(value);
+                customer_data += '<tr>';
+                customer_data += '<td>'+value.id+'</td>';
+                customer_data += '<td>'+value.first_name+'</td>';
+                customer_data += '<td>'+value.last_name+'</td>';
+                customer_data += '<td>'+value.phone+'</td>';
+                customer_data += '<td>'+value.address+'</td>';
+                customer_data += '<td>'+value.district+'</td>';
+                customer_data += '<td>'+value.city+'</td>';
+                customer_data += '<td>'+value.country+'</td>';
+                customer_data += '</tr>';
+            });
+            $("#list_table_json").append(customer_data);
+        },
+        error: function(d){
+            console.log("error");
+            alert("404. Please wait until the File is Loaded.");
+        }
+    });
+});
+</script>
+
+</body>
+</html>

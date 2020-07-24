@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Film Details</h1>
+    <table style="border: 1px solid black;" id="film_table_json">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Length</th>
+                <th>Rating</th>
+                <th>Rental Duration</th>
+                <th>Replacement Cost</th>
+                <th>Special Features</th>
+            </tr>
+        </thead>
+    </table>
+    <h1>Customers who rented this film</h1>
+    <table style="border: 1px solid black;" id="customer_table_json">
+        <thead>
+            <tr>
+                <th>Customer ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>District</th>
+                <th>City</th>
+                <th>Country</th>
+            </tr>
+        </thead>
+    </table>
+<script src="https://unpkg.com/jquery@3.2.1/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $.ajax({
+        url: "/api/customers/films/6",
+        dataType: 'json',
+        type: 'get',
+        cache: false,
+        success: function(data){
+            var customer_rental_data = '';
+            var film_data = '';
+            $.each(data.customers, function(index, value){
+                customer_rental_data += '<tr>';
+                customer_rental_data += '<td>'+value.id+'</td>';
+                customer_rental_data += '<td>'+value.first_name+'</td>';
+                customer_rental_data += '<td>'+value.last_name+'</td>';
+                customer_rental_data += '<td>'+value.phone+'</td>';
+                customer_rental_data += '<td>'+value.address+'</td>';
+                customer_rental_data += '<td>'+value.district+'</td>';
+                customer_rental_data += '<td>'+value.city+'</td>';
+                customer_rental_data += '<td>'+value.country+'</td>';
+                customer_rental_data += '</tr>';
+            });
+            $("#customer_table_json").append(customer_rental_data);
+
+            $.each(data.film_details, function(index, value){
+                film_data += '<tr>';
+                film_data += '<td>'+value.title+'</td>';
+                film_data += '<td>'+value.description+'</td>';
+                film_data += '<td>'+value.category+'</td>';
+                film_data += '<td>'+value.length+'</td>';
+                film_data += '<td>'+value.rating+'</td>';
+                film_data += '<td>'+value.rental_duration+'</td>';
+                film_data += '<td>'+value.replacement_cost+'</td>';
+                film_data += '<td>'+value.special_features+'</td>';
+                film_data += '</tr>';
+            });
+            $("#film_table_json").append(film_data);
+
+            console.log(data.customers);
+            console.log(data.film_details);
+        },
+        error: function(d){
+            console.log("error");
+            alert("404. Please wait until the File is Loaded.");
+        }
+    });
+});
+</script>
+
+</body>
+</html>
