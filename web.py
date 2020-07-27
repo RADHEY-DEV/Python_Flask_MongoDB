@@ -1,3 +1,5 @@
+import logging
+
 from flask import Flask, render_template
 from flask import jsonify
 from flask_pymongo import PyMongo
@@ -59,6 +61,7 @@ def api_customer(customer_id):
                  'rental_cost': rental['Payments'][0]['Amount']})
         data = customer_rentals
     else:
+        logging.error(f"User with the ID {customer_id} not found")
         data = "No results"
     return jsonify(data)
 
@@ -90,6 +93,10 @@ def api_film(film_id):
 
     # Get the film details and add to the data that will be return by API
     film = mongo.db.films.find_one({'_id': film_id})
+    if not film:
+        logging.error(f"Film with the ID {film_id} not found")
+        data = "No results"
+        return jsonify(data)
     film_details = []
     film_details.append({'title': film['Title'],
                          'category': film['Category'],
