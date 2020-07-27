@@ -128,4 +128,5 @@ def api_film(film_id):
 
 
 if __name__ == '__main__':
+    logging.basicConfig(filename='dvdrentals.log', level=logging.INFO)
     app.run(debug=True)
