@@ -14,17 +14,26 @@ mongo = PyMongo(app)
 
 @app.route('/customers')
 def customers():
-    return render_template('customers.html')
-
+    try:
+        return render_template('customers.html')
+    except:
+        logging.error(f"Customer not found")
+      
 
 @app.route('/customer_rentals/<customer_id>', methods=['GET'])
 def customer_rentals(customer_id):
-    return render_template('customer_rentals.html', customer_id=customer_id)
-
+    try:
+        return render_template('customer_rentals.html', customer_id=customer_id)
+    except:
+        logging.error(f"Customer with the ID {customer_id} not found")
+      
 
 @app.route('/film_customer_rentals')
 def film_customer_rentals():
-    return render_template('film_customer.html')
+    try:
+        return render_template('film_customer.html')
+    except:
+        logging.error(f"film not found")
 
 
 @app.route('/api/customers', methods=['GET'])
@@ -32,19 +41,23 @@ def api_customers():
     customers = mongo.db.customers
 
     data = []  # Create a list of data we want to expose to the API
-    for customer in customers.find():
-        data.append({'id': customer['_id'],
-                     'first_name': customer['First Name'],
-                     'last_name': customer['Last Name'],
-                     'phone': customer['Phone'],
-                     'address': customer['Address'],
-                     'district': customer['District'],
-                     'country': customer['Country'],
-                     'city': customer['City'],
-                     'rentals': customer['Rentals']})
+   
+    try:
+        for customer in customers.find():
+            data.append({'id': customer['_id'],
+                        'first_name': customer['First Name'],
+                        'last_name': customer['Last Name'],
+                        'phone': customer['Phone'],
+                        'address': customer['Address'],
+                        'district': customer['District'],
+                        'country': customer['Country'],
+                        'city': customer['City'],
+                        'rentals': customer['Rentals']})
 
-    return jsonify(data)
-
+          return jsonify(data)
+    except:
+        logging.error(f"No customer found")
+       
 
 @app.route('/api/customers/<customer_id>', methods=['GET'])
 def api_customer(customer_id):
@@ -69,7 +82,10 @@ def api_customer(customer_id):
 @app.route('/api/films', methods=['GET'])
 def api_films():
     films = mongo.db.films
-
+    if not film:
+        logging.error(f"Film with the ID {film_id} not found")
+        data = "No results"
+        return jsonify(data)
     data = []  # Create a list of data we want to expose to the API
     for film in films.find():
         data.append({'film': {'title': film['Title'],
